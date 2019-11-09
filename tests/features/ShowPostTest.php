@@ -15,6 +15,7 @@ class ShowPostTest extends FeatureTestCase
         ]);
 
         $user->posts()->save($post);
+        // dd(route('posts.show', $post));
 
         // When
         $this->visit(route('posts.show', $post))

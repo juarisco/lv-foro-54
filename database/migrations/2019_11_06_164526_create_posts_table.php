@@ -17,6 +17,7 @@ class CreatePostsTable extends Migration
             $table->increments('id');
 
             $table->string('title');
+            $table->string('slug');
             $table->mediumText('content');
             $table->boolean('pending')->default(true);
 
