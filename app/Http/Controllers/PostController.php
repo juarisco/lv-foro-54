@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
+    public function index()
+    {
+        return view('posts.index', ['posts' => Post::all()]);
+    }
+
     public function show(Post $post, $slug)
     {
         if ($post->slug != $slug) {
