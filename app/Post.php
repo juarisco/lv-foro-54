@@ -9,6 +9,15 @@ class Post extends Model
 {
     protected $fillable = ['title', 'content'];
 
+    /**
+     * The attributes that should be casted to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'pending' => 'boolean',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);
