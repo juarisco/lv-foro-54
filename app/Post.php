@@ -28,6 +28,11 @@ class Post extends Model
         return $this->hasMany(Comment::class);
     }
 
+    public function latestComments()
+    {
+        return $this->comments()->latest();
+    }
+
     public function setTitleAttribute($value)
     {
         $this->attributes['title'] = $value;
