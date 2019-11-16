@@ -6,7 +6,7 @@ use App\User;
 use App\Comment;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class CommnentPolicy
+class CommentPolicy
 {
     use HandlesAuthorization;
 

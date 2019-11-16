@@ -2,7 +2,7 @@
 
 use App\User;
 use App\Comment;
-use App\Policies\CommnentPolicy;
+use App\Policies\CommentPolicy;
 
 class CommentPolicyTest extends FeatureTestCase
 {
@@ -10,7 +10,7 @@ class CommentPolicyTest extends FeatureTestCase
     {
         $comment = factory(Comment::class)->create();
 
-        $policy = new CommnentPolicy;
+        $policy = new CommentPolicy;
 
         $this->assertTrue(
             $policy->accept($comment->post->user, $comment)
@@ -21,7 +21,7 @@ class CommentPolicyTest extends FeatureTestCase
     {
         $comment = factory(Comment::class)->create();
 
-        $policy = new CommnentPolicy;
+        $policy = new CommentPolicy;
 
         $this->assertFalse(
             $policy->accept(factory(User::class)->create(), $comment)
