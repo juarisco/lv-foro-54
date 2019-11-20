@@ -27,5 +27,10 @@ Route::post('comments/{comment}/accept', [
 // Subscriptions
 Route::post('posts/{post}/subscribe', [
     'uses' => 'SubscriptionController@subscribe',
-    'as' => 'posts.subcribe'
+    'as' => 'posts.subscribe'
+]);
+
+Route::delete('posts/{post}/subscribe', [
+    'uses' => 'SubscriptionController@unsubscribe',
+    'as' => 'posts.unsubscribe'
 ]);
