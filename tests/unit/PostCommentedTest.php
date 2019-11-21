@@ -10,23 +10,22 @@ class PostCommentedTest extends FeatureTestCase
 {
     function test_it_builds_a_mail_message()
     {
-        $post = factory(Post::class)->create([
+        $post = new Post([
             'title' => 'Titulo del post'
         ]);
 
-        $author = factory(User::class)->create([
+        $author = new User([
             'name' => 'John Doe'
         ]);
 
-        $comment = factory(Comment::class)->create([
-            'post_id' => $post->id,
-            'user_id' => $author->id
-        ]);
+        $comment = new Comment;
+        $comment->post = $post;
+        $comment->user = $author;
 
         $notification = new PostCommented($comment);
 
         // $this->assertInstanceOf(PostCommented::class, $notification);
-        $subcriber = factory(User::class)->create();
+        $subcriber = new User();
 
         $message = $notification->toMail($subcriber);
 
