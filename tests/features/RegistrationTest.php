@@ -40,7 +40,7 @@ class RegistrationTest extends FeatureTestCase
         });
 
         // todo: finish this feature!
-        return;
+        // return;
 
         $this->seeRouteIs('register_confirmation')
             ->see('Gracias por registrarte')
