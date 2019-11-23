@@ -2,7 +2,7 @@
 
 use App\Post;
 
-class PostModelTest extends FeatureTestCase
+class PostModelTest extends TestCase
 {
     function test_adding_a_title_generates_a_slug()
     {
@@ -19,7 +19,7 @@ class PostModelTest extends FeatureTestCase
             'title' => 'Como instalar Laravel'
         ]);
 
-        $post->title = 'Como instalar LAravel 5.1 LTS';
+        $post->title = 'Como instalar Laravel 5.1 LTS';
 
         $this->assertSame('como-instalar-laravel-51-lts', $post->slug);
     }

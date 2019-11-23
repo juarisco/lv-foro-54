@@ -6,21 +6,21 @@ class ShowPostTest extends FeatureTestCase
     {
         // Having
         $user = $this->defaultUser([
-            'first_name' => 'John',
-            'last_name' => 'Doe'
+            'first_name' => 'Duilio',
+            'last_name' => 'Palacios',
         ]);
 
         $post = $this->createPost([
-            'title' => 'Como instalar Laravel',
-            'content' => 'Este es el contenido de post',
-            'user_id' => $user->id
+            'title' => 'Este es el titulo del post',
+            'content' => 'Este es el contenido del post',
+            'user_id' => $user->id,
         ]);
 
         // When
         $this->visit($post->url)
             ->seeInElement('h1', $post->title)
             ->see($post->content)
-            ->see('John Doe');
+            ->see('Duilio Palacios');
     }
 
     function test_old_urls_are_redirected()
@@ -34,8 +34,14 @@ class ShowPostTest extends FeatureTestCase
 
         $post->update(['title' => 'New title']);
 
-        // dd($url);
         $this->visit($url)
             ->seePageIs($post->url);
     }
 }
+
+
+
+
+
+
+

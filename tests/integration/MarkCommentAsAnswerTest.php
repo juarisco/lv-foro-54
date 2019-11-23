@@ -1,9 +1,12 @@
 <?php
 
 use App\Comment;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class MarkCommentAsAnswerTest extends FeatureTestCase
+class MarkCommentAsAnswerTest extends TestCase
 {
+    use DatabaseTransactions;
+
     function test_a_post_can_be_answered()
     {
         $post = $this->createPost();
@@ -15,6 +18,7 @@ class MarkCommentAsAnswerTest extends FeatureTestCase
         $comment->markAsAnswer();
 
         $this->assertTrue($comment->fresh()->answer);
+
         $this->assertFalse($post->fresh()->pending);
     }
 
@@ -22,14 +26,16 @@ class MarkCommentAsAnswerTest extends FeatureTestCase
     {
         $post = $this->createPost();
 
-        $comments = factory(Comment::class, 2)->create([
+        $comments = factory(Comment::class)->times(2)->create([
             'post_id' => $post->id
         ]);
 
         $comments->first()->markAsAnswer();
+
         $comments->last()->markAsAnswer();
 
         $this->assertFalse($comments->first()->fresh()->answer);
+
         $this->assertTrue($comments->last()->fresh()->answer);
     }
 }

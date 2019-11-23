@@ -1,7 +1,6 @@
 <?php
 
-use App\User;
-use App\Token;
+use App\{User, Token};
 use App\Mail\TokenMail;
 use Illuminate\Support\Facades\Mail;
 
@@ -11,18 +10,18 @@ class RegistrationTest extends FeatureTestCase
     {
         Mail::fake();
 
-        $this->visit('register')
-            ->type('admin@mail.com', 'email')
-            ->type('juarisco', 'username')
-            ->type('John', 'first_name')
-            ->type('Doe', 'last_name')
+        $this->visitRoute('register')
+            ->type('admin@styde.net', 'email')
+            ->type('silence', 'username')
+            ->type('Duilio', 'first_name')
+            ->type('Palacios', 'last_name')
             ->press('Regístrate');
 
         $this->seeInDatabase('users', [
-            'email' => 'admin@mail.com',
-            'username' => 'juarisco',
-            'first_name' => 'John',
-            'last_name' => 'Doe',
+            'email' => 'admin@styde.net',
+            'username' => 'silence',
+            'first_name' => 'Duilio',
+            'last_name' => 'Palacios',
         ]);
 
         $user = User::first();
@@ -35,15 +34,21 @@ class RegistrationTest extends FeatureTestCase
 
         $this->assertNotNull($token);
 
-        Mail::assertSentTo($user, TokenMail::class, function ($mail) use ($token) {
-            return $mail->token->id == $token->id;
+        Mail::assertSent(TokenMail::class, function ($mail) use ($token, $user) {
+            return $mail->hasTo($user) && $mail->token->id == $token->id;
         });
 
-        // todo: finish this feature!
-        // return;
+        //todo: finish this feature!
+        return;
 
         $this->seeRouteIs('register_confirmation')
             ->see('Gracias por registrarte')
-            ->see('Eviamos a tu email un enlace para que inicies sesión');
+            ->see('Enviamos a tu email un enlace para que inicies sesión');
     }
 }
+
+
+
+
+
+

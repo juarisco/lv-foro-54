@@ -43,7 +43,6 @@ class SubscribeToPostsTest extends FeatureTestCase
             ->dontSee('Suscribirse al post')
             ->press('Desuscribirse del post');
 
-        // Then
         $this->dontSeeInDatabase('subscriptions', [
             'user_id' => $user->id,
             'post_id' => $post->id,

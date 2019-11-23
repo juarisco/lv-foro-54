@@ -1,7 +1,6 @@
 <?php
 
 use App\Token;
-use App\Mail\TokenMail;
 use Illuminate\Support\Facades\Mail;
 
 class RequestTokenTest extends FeatureTestCase
@@ -11,11 +10,11 @@ class RequestTokenTest extends FeatureTestCase
         // Having
         Mail::fake();
 
-        $user = $this->defaultUser(['email' => 'admin@mail.com']);
+        $user = $this->defaultUser(['email' => 'admin@styde.net']);
 
         // When
         $this->visitRoute('token')
-            ->type('admin@mail.com', 'email')
+            ->type('admin@styde.net', 'email')
             ->press('Solicitar token');
 
         // Then: a new token is created in the database
@@ -24,8 +23,8 @@ class RequestTokenTest extends FeatureTestCase
         $this->assertNotNull($token, 'A token was not created');
 
         // And sent to the user
-        Mail::assertSentTo($user, TokenMail::class, function ($mail) use ($token) {
-            return $mail->token->id === $token->id;
+        Mail::assertSent(\App\Mail\TokenMail::class, function ($mail) use ($token, $user) {
+            return $mail->hasTo($user) && $mail->token->id === $token->id;
         });
 
         $this->dontSeeIsAuthenticated();
@@ -48,7 +47,7 @@ class RequestTokenTest extends FeatureTestCase
         $this->assertNull($token, 'A token was created');
 
         // And sent to the user
-        Mail::assertNotSent(TokenMail::class);
+        Mail::assertNotSent(\App\Mail\TokenMail::class);
 
         $this->dontSeeIsAuthenticated();
 
@@ -57,11 +56,11 @@ class RequestTokenTest extends FeatureTestCase
         ]);
     }
 
-    function test_a_guest_user_can_request_a_token_an__invalid_email()
+    function test_a_guest_user_can_request_a_token_an_invalid_email()
     {
         // When
         $this->visitRoute('token')
-            ->type('asdf', 'email')
+            ->type('Silence', 'email')
             ->press('Solicitar token');
 
         $this->seeErrors([
@@ -71,11 +70,11 @@ class RequestTokenTest extends FeatureTestCase
 
     function test_a_guest_user_can_request_a_token_with_a_non_existent_email()
     {
-        $user = $this->defaultUser(['email' => 'admin@mail.com']);
+        $this->defaultUser(['email' => 'admin@styde.net']);
 
         // When
         $this->visitRoute('token')
-            ->type('wrong@mail.com', 'email')
+            ->type('silence@styde.net', 'email')
             ->press('Solicitar token');
 
         $this->seeErrors([

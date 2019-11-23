@@ -4,7 +4,7 @@ use App\Post;
 
 class CreatePostsTest extends FeatureTestCase
 {
-    function test_a_user_create_a_post()
+    public function test_a_user_create_a_post()
     {
         // Having
         $title = 'Esta es una pregunta';
@@ -24,12 +24,12 @@ class CreatePostsTest extends FeatureTestCase
             'content' => $content,
             'pending' => true,
             'user_id' => $user->id,
-            'slug' => 'esta-es-una-pregunta'
+            'slug' => 'esta-es-una-pregunta',
         ]);
 
         $post = Post::first();
 
-        // Test the author is subscribed automatically to the post.
+        // Test the author is suscribed automatically to the post.
         $this->seeInDatabase('subscriptions', [
             'user_id' => $user->id,
             'post_id' => $post->id,
@@ -41,7 +41,6 @@ class CreatePostsTest extends FeatureTestCase
 
     function test_creating_a_post_requires_authentication()
     {
-        // When
         $this->visit(route('posts.create'))
             ->seePageIs(route('token'));
     }
@@ -56,6 +55,5 @@ class CreatePostsTest extends FeatureTestCase
                 'title' => 'El campo título es obligatorio',
                 'content' => 'El campo contenido es obligatorio'
             ]);
-        // ->seeInElement('#field_content.has-error .help-block', 'El campo contenido es obligatorio');
     }
 }

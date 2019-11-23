@@ -1,11 +1,13 @@
 <?php
 
-use App\User;
-use App\Comment;
+use App\{Comment, User};
 use App\Policies\CommentPolicy;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class CommentPolicyTest extends FeatureTestCase
+class CommentPolicyTest extends TestCase
 {
+    use DatabaseTransactions;
+
     function test_the_posts_author_can_select_a_comment_as_an_answer()
     {
         $comment = factory(Comment::class)->create();

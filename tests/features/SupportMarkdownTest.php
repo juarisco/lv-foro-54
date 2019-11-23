@@ -16,21 +16,21 @@ class SupportMarkdownTest extends FeatureTestCase
 
     function test_the_code_in_the_post_is_escaped()
     {
-        $xssAttack = "<scritp>alert('Malicious JS!')</script>";
+        $code = "<script>alert('Sharing code')</script>";
 
         $post = $this->createPost([
-            'content' => "`$xssAttack`. Texto normal."
+            'content' => "`$code`. Texto normal."
         ]);
 
         $this->visit($post->url)
-            ->dontSee($xssAttack)
+            ->dontSee($code)
             ->seeText('Texto normal')
-            ->seeText($xssAttack);
+            ->seeText($code);
     }
 
     function test_xss_attack()
     {
-        $xssAttack = "<scritp>alert('Malicious JS!')</script>";
+        $xssAttack = "<script>alert('Malicious JS!')</script>";
 
         $post = $this->createPost([
             'content' => "$xssAttack. Texto normal."

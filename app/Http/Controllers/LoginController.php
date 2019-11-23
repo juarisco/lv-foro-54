@@ -12,7 +12,7 @@ class LoginController extends Controller
         $token = Token::findActive($token);
 
         if ($token == null) {
-            alert('Este enlace ya expiró, por favor soicita otro', 'danger');
+            alert('Este enlace ya expiró, por favor solicita otro', 'danger');
 
             return redirect()->route('token');
         }

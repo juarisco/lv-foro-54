@@ -2,7 +2,6 @@
 
 use App\Token;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
 
 class AuthenticationTest extends FeatureTestCase
 {
@@ -12,7 +11,6 @@ class AuthenticationTest extends FeatureTestCase
         $user = $this->defaultUser();
 
         $token = Token::generateFor($user);
-        // dd($token->token);
 
         // When
         $this->visit("login/{$token->token}");
@@ -34,15 +32,15 @@ class AuthenticationTest extends FeatureTestCase
         $user = $this->defaultUser();
 
         $token = Token::generateFor($user);
+
         $invalidToken = str_random(60);
 
         // When
         $this->visit("login/{$invalidToken}");
 
-        // Then
         $this->dontSeeIsAuthenticated()
             ->seeRouteIs('token')
-            ->see('Este enlace ya expiró, por favor soicita otro');
+            ->see('Este enlace ya expiró, por favor solicita otro');
 
         $this->seeInDatabase('tokens', [
             'id' => $token->id
@@ -63,13 +61,12 @@ class AuthenticationTest extends FeatureTestCase
         // When
         $this->visitRoute('login', ['token' => $token->token]);
 
-        // Then
         $this->dontSeeIsAuthenticated()
             ->seeRouteIs('token')
-            ->see('Este enlace ya expiró, por favor soicita otro');
+            ->see('Este enlace ya expiró, por favor solicita otro');
     }
 
-    function test_the_token_expire_after_30_minutes()
+    function test_the_token_expires_after_30_minutes()
     {
         // Having
         $user = $this->defaultUser();
@@ -81,10 +78,9 @@ class AuthenticationTest extends FeatureTestCase
         // When
         $this->visitRoute('login', ['token' => $token->token]);
 
-        // Then
         $this->dontSeeIsAuthenticated()
             ->seeRouteIs('token')
-            ->see('Este enlace ya expiró, por favor soicita otro');
+            ->see('Este enlace ya expiró, por favor solicita otro');
     }
 
     function test_the_token_is_case_sensitive()
@@ -97,9 +93,8 @@ class AuthenticationTest extends FeatureTestCase
         // When
         $this->visitRoute('login', ['token' => strtolower($token->token)]);
 
-        // Then
         $this->dontSeeIsAuthenticated()
             ->seeRouteIs('token')
-            ->see('Este enlace ya expiró, por favor soicita otro');
+            ->see('Este enlace ya expiró, por favor solicita otro');
     }
 }
