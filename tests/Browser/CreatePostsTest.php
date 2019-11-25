@@ -19,7 +19,7 @@ class CreatePostsTest extends DuskTestCase
         $user = $this->defaultUser();
         $category = factory(\App\Category::class)->create();
 
-        $this->browse(function ($browser) use ($user,$category) {
+        $this->browse(function ($browser) use ($user, $category) {
             // Having
             $browser->loginAs($user)
                 ->visitRoute('posts.create')
