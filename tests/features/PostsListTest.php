@@ -1,6 +1,7 @@
 <?php
 
 use App\Post;
+use App\Category;
 use Carbon\Carbon;
 
 class PostsListTest extends FeatureTestCase
@@ -16,6 +17,39 @@ class PostsListTest extends FeatureTestCase
             ->see($post->title)
             ->click($post->title)
             ->seePageIs($post->url);
+    }
+
+    function test_a_user_can_see_posts_filtered_by_category()
+    {
+        // Having
+        $laravel = factory(Category::class)->create([
+            'name' => 'Laravel', 'slug' => 'laravel'
+        ]);
+
+        $vue = factory(Category::class)->create([
+            'name' => 'Vue.js', 'slug' => 'vue-js'
+        ]);
+
+        $laravelPost = factory(Post::class)->create([
+            'title' => 'Post de Laravel',
+            'category_id' => $laravel->id
+        ]);
+
+        $vuePost = factory(Post::class)->create([
+            'title' => 'Post de Vue.js',
+            'category_id' => $vue->id
+        ]);
+
+        // When
+        $this->visit('/')
+            ->see($laravelPost->title)
+            ->see($vuePost->title)
+            ->within(('.categories'), function () {
+                $this->click('Laravel');
+            })
+            ->seeInElement('h1', 'Posts de laravel')
+            ->see($laravelPost->title)
+            ->dontSee($vuePost);
     }
 
     function test_the_posts_are_paginated()

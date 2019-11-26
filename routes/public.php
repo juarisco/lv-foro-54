@@ -11,14 +11,10 @@
 |
 */
 
-use App\Post;
-
-Route::get('/', [
+Route::get('{category?}', [
     'uses' => 'PostController@index',
     'as' => 'posts.index'
 ]);
-
-// Auth::routes();
 
 Route::get('/home', 'HomeController@index');
 

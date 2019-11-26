@@ -44,6 +44,13 @@ class Post extends Model
         return $this->comments()->latest();
     }
 
+    public function scopeCategory($query, Category $category)
+    {
+        if ($category->exists) {
+            $query->where('category_id', $category->id);
+        }
+    }
+
     public function setTitleAttribute($value)
     {
         $this->attributes['title'] = $value;
