@@ -10,7 +10,9 @@ class CommentController extends Controller
 {
     public function store(Request $request, Post $post)
     {
-        // @todo: Add validayion!
+        $this->validate($request, [
+            'comment' => 'required',
+        ]);
 
         auth()->user()->comment($post, $request->comment);
 
