@@ -10,28 +10,30 @@ class ListPostController extends Controller
 {
     public function __invoke(Category $category = null, Request $request)
     {
-        $routeName = $request->route()->getName();
-
         list($ordenColumn, $orderDirection) = $this->getListOrder($request->get('orden')); // recientes, antiguos, ...
 
         $posts = Post::query()
-            ->scopes($this->getListScopes($category, $routeName))
+            ->scopes($this->getListScopes($category, $request))
             ->orderBy($ordenColumn, $orderDirection)
-            ->paginate();
+            ->paginate()
+            ->appends($request->intersect(['orden']));
 
-        $posts->appends(request()->intersect(['orden']));
-
-        // $categoryItems = $this->getCategoryItems($routeName);
-
-        return view('posts.index', compact('posts', 'category', 'categoryItems'));
+        return view('posts.index', compact('posts', 'category'));
     }
 
-    protected function getListScopes(Category $category, string $routeName)
+    protected function getListScopes(Category $category, Request $request)
     {
         $scopes = [];
 
+        $routeName = $request->route()->getName();
+        // dd($routeName);
+
         if ($category->exists) {
             $scopes['category'] = [$category];
+        }
+
+        if ($routeName == 'posts.mine') {
+            $scopes['byUser'] = [$request->user()];
         }
 
         if ($routeName == 'posts.pending') {

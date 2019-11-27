@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\User;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use GrahamCampbell\Markdown\Facades\Markdown;
@@ -59,6 +60,11 @@ class Post extends Model
     public function scopeCompleted($query)
     {
         $query->where('pending', false);
+    }
+
+    public function scopeByUser($query, User $user)
+    {
+        $query->where('user_id', $user->id);
     }
 
     public function setTitleAttribute($value)
