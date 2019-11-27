@@ -13,6 +13,7 @@ class ListPostController extends Controller
         list($ordenColumn, $orderDirection) = $this->getListOrder($request->get('orden')); // recientes, antiguos, ...
 
         $posts = Post::query()
+            ->with(['user', 'category'])
             ->scopes($this->getListScopes($category, $request))
             ->orderBy($ordenColumn, $orderDirection)
             ->paginate()
