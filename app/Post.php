@@ -2,12 +2,15 @@
 
 namespace App;
 
+use App\CanBeVoted;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use GrahamCampbell\Markdown\Facades\Markdown;
 
 class Post extends Model
 {
+    use CanBeVoted;
+
     protected $fillable = ['title', 'content', 'category_id'];
 
     protected $casts = [
@@ -43,7 +46,7 @@ class Post extends Model
     public function scopeCategory($query, Category $category)
     {
         if ($category->exists) {
-           $query->where('category_id', $category->id);
+            $query->where('category_id', $category->id);
         }
     }
 
