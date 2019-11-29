@@ -2,10 +2,11 @@
 
 namespace Tests\Browser;
 
-use App\Category;
 use App\Post;
+use App\Category;
 use Carbon\Carbon;
 use Tests\DuskTestCase;
+use Laravel\Dusk\Browser;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class PostsListTest extends DuskTestCase
@@ -18,7 +19,7 @@ class PostsListTest extends DuskTestCase
             'title' => '¿Debo usar Laravel 5.3 o 5.1 LTS?'
         ]);
 
-        $this->browse(function($browser) use($post){
+        $this->browse(function (Browser $browser) use ($post) {
             $browser->visit('/')
                 ->assertSeeIn('h1', 'Posts')
                 ->assertSee($post->title)
@@ -47,14 +48,14 @@ class PostsListTest extends DuskTestCase
             'category_id' => $vue->id
         ]);
 
-        $this->browse(function($browser) use($laravelPost, $vuePost){
-           $browser->visit('/')
-               ->assertSee($laravelPost->title)
-               ->assertSee($vuePost->title)
-               ->clickLink('Laravel')
-               ->assertSeeIn('h1', 'Posts de Laravel')
-               ->assertSee($laravelPost->title)
-               ->assertDontSee($vuePost->title);
+        $this->browse(function ($browser) use ($laravelPost, $vuePost) {
+            $browser->visit('/')
+                ->assertSee($laravelPost->title)
+                ->assertSee($vuePost->title)
+                ->clickLink('Laravel')
+                ->assertSeeIn('h1', 'Posts de Laravel')
+                ->assertSee($laravelPost->title)
+                ->assertDontSee($vuePost->title);
         });
     }
 
@@ -70,7 +71,7 @@ class PostsListTest extends DuskTestCase
             'pending' => false,
         ]);
 
-        $this->browse(function($browser) use($pendingPost, $completedPost){
+        $this->browse(function ($browser) use ($pendingPost, $completedPost) {
             $browser->visit(route('posts.pending'))
                 ->assertSee($pendingPost->title)
                 ->assertDontSee($completedPost->title);
@@ -108,7 +109,7 @@ class PostsListTest extends DuskTestCase
             'pending' => false,
         ]);
 
-        $this->browse(function($browser) use($pendingLaravelPost, $pendingVuePost, $completedPost){
+        $this->browse(function ($browser) use ($pendingLaravelPost, $pendingVuePost, $completedPost) {
             $browser->visit(route('posts.index'))
                 ->clickLink('Posts pendientes')
                 ->clickLink('Categoria de Laravel')
@@ -136,7 +137,7 @@ class PostsListTest extends DuskTestCase
             'created_at' => Carbon::now()
         ]);
 
-        $this->browse(function($browser) use($last, $first){
+        $this->browse(function ($browser) use ($last, $first) {
             $browser->visit('/')
                 ->assertSee($last->title)
                 ->assertDontSee($first->title)
