@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
-use App\Token;
+use App\{User, Token};
 use Illuminate\Http\Request;
 
 class TokenController extends Controller

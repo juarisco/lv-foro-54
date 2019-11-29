@@ -28,7 +28,7 @@ class CreatePostsTest extends FeatureTestCase
             'pending' => true,
             'user_id' => $user->id,
             'slug' => 'esta-es-una-pregunta',
-            'category_id' => $category->id
+            'category_id' => $category->id,
         ]);
 
         $post = Post::first();

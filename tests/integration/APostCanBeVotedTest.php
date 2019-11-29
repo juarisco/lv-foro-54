@@ -3,13 +3,11 @@
 use App\Vote;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-
 class APostCanBeVotedTest extends TestCase
 {
     use DatabaseTransactions;
 
     protected $user;
-
     protected $post;
 
     function setUp()
@@ -28,8 +26,19 @@ class APostCanBeVotedTest extends TestCase
         $this->assertDatabaseHas('votes', [
             'post_id' => $this->post->id,
             'user_id' => $this->user->id,
-            'vote' => 1
+            'vote' => 1,
         ]);
+
+        $this->assertSame(1, $this->post->score);
+    }
+
+    function test_a_post_cannot_be_upvoted_twice_by_the_same_user()
+    {
+        Vote::upvote($this->post);
+
+        Vote::upvote($this->post);
+
+        $this->assertSame(1, Vote::count());
 
         $this->assertSame(1, $this->post->score);
     }
@@ -41,25 +50,16 @@ class APostCanBeVotedTest extends TestCase
         $this->assertDatabaseHas('votes', [
             'post_id' => $this->post->id,
             'user_id' => $this->user->id,
-            'vote' => -1
+            'vote' => -1,
         ]);
 
         $this->assertSame(-1, $this->post->score);
     }
 
-    function test_a_post_cannot_be_upvoted_twice_by_the_same_user()
-    {
-        Vote::upvote($this->post);
-        Vote::upvote($this->post);
-
-        $this->assertSame(1, Vote::count());
-
-        $this->assertSame(1, $this->post->score);
-    }
-
     function test_a_post_cannot_be_downvoted_twice_by_the_same_user()
     {
         Vote::downvote($this->post);
+
         Vote::downvote($this->post);
 
         $this->assertSame(1, Vote::count());
@@ -70,6 +70,7 @@ class APostCanBeVotedTest extends TestCase
     function test_a_user_can_switch_from_upvote_to_downvote()
     {
         Vote::upvote($this->post);
+
         Vote::downvote($this->post);
 
         $this->assertSame(1, Vote::count());
@@ -80,6 +81,7 @@ class APostCanBeVotedTest extends TestCase
     function test_a_user_can_switch_from_downvote_to_upvote()
     {
         Vote::downvote($this->post);
+
         Vote::upvote($this->post);
 
         $this->assertSame(1, Vote::count());
@@ -92,7 +94,7 @@ class APostCanBeVotedTest extends TestCase
         Vote::create([
             'post_id' => $this->post->id,
             'user_id' => $this->anyone()->id,
-            'vote' => 1
+            'vote' => 1,
         ]);
 
         Vote::upvote($this->post);
@@ -111,7 +113,7 @@ class APostCanBeVotedTest extends TestCase
         $this->assertDatabaseMissing('votes', [
             'post_id' => $this->post->id,
             'user_id' => $this->user->id,
-            'vote' => 1
+            'vote' => 1,
         ]);
 
         $this->assertSame(0, $this->post->score);

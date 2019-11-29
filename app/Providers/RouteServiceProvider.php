@@ -38,10 +38,10 @@ class RouteServiceProvider extends ServiceProvider
         $this->mapApiRoutes();
 
         $this->mapGuestRoutes();
+
         $this->mapAuthRoutes();
 
         $this->mapPublicRoutes();
-        //
     }
 
     protected function mapPublicRoutes()
@@ -53,6 +53,7 @@ class RouteServiceProvider extends ServiceProvider
             require base_path('routes/public.php');
         });
     }
+
     protected function mapGuestRoutes()
     {
         Route::group([
@@ -62,6 +63,7 @@ class RouteServiceProvider extends ServiceProvider
             require base_path('routes/guest.php');
         });
     }
+
     protected function mapAuthRoutes()
     {
         Route::group([

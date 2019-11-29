@@ -12,6 +12,9 @@ class TokenMail extends Mailable
 {
     use Queueable, SerializesModels;
 
+    /**
+     * @var Token
+     */
     public $token;
 
     /**
@@ -21,6 +24,7 @@ class TokenMail extends Mailable
      */
     public function __construct(Token $token)
     {
+        //
         $this->token = $token;
     }
 

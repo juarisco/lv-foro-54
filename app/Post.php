@@ -2,7 +2,6 @@
 
 namespace App;
 
-use App\User;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use GrahamCampbell\Markdown\Facades\Markdown;
@@ -11,14 +10,9 @@ class Post extends Model
 {
     protected $fillable = ['title', 'content', 'category_id'];
 
-    /**
-     * The attributes that should be casted to native types.
-     *
-     * @var array
-     */
     protected $casts = [
         'pending' => 'boolean',
-        'score' => 'integer'
+        'score' => 'integer',
     ];
 
     public function user()
@@ -43,13 +37,13 @@ class Post extends Model
 
     public function latestComments()
     {
-        return $this->comments()->latest();
+        return $this->comments()->orderBy('created_at', 'DESC');
     }
 
     public function scopeCategory($query, Category $category)
     {
         if ($category->exists) {
-            $query->where('category_id', $category->id);
+           $query->where('category_id', $category->id);
         }
     }
 
@@ -71,6 +65,7 @@ class Post extends Model
     public function setTitleAttribute($value)
     {
         $this->attributes['title'] = $value;
+
         $this->attributes['slug'] = Str::slug($value);
     }
 

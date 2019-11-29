@@ -6,7 +6,6 @@ use App\Notifications\PostCommented;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Notification;
-use Symfony\Component\HttpFoundation\Request;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
@@ -19,10 +18,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'username',
-        'first_name',
-        'last_name',
-        'email',
+        'email', 'username', 'first_name', 'last_name',
     ];
 
     /**

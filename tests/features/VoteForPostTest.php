@@ -1,6 +1,7 @@
 <?php
 
 use App\Vote;
+use App\VoteRepository;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class VoteForPostTest extends TestCase
@@ -22,7 +23,7 @@ class VoteForPostTest extends TestCase
         $this->assertDatabaseHas('votes', [
             'post_id' => $post->id,
             'user_id' => $user->id,
-            'vote' => 1
+            'vote' => 1,
         ]);
 
         $this->assertSame(1, $post->fresh()->score);
@@ -43,7 +44,7 @@ class VoteForPostTest extends TestCase
         $this->assertDatabaseHas('votes', [
             'post_id' => $post->id,
             'user_id' => $user->id,
-            'vote' => -1
+            'vote' => -1,
         ]);
 
         $this->assertSame(-1, $post->fresh()->score);
@@ -55,7 +56,7 @@ class VoteForPostTest extends TestCase
 
         $post = $this->createPost();
 
-        Vote::upvote($post);
+        app(VoteRepository::class)->upvote($post);
 
         $this->deleteJson($post->url . '/vote')
             ->assertSuccessful()
@@ -70,7 +71,7 @@ class VoteForPostTest extends TestCase
 
         $this->assertDatabaseHas('posts', [
             'id' => $post->id,
-            'score' => 0
+            'score' => 0,
         ]);
     }
 
@@ -91,7 +92,7 @@ class VoteForPostTest extends TestCase
 
         $this->assertDatabaseHas('posts', [
             'id' => $post->id,
-            'score' => 0
+            'score' => 0,
         ]);
     }
 }

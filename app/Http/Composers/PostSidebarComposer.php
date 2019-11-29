@@ -33,6 +33,7 @@ class PostSidebarComposer
                     'title' => $category->name,
                     'full_url' => route($routeName, $category)
                 ];
-            })->toArray();
+            })
+            ->toArray();
     }
 }

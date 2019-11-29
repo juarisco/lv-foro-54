@@ -25,8 +25,7 @@ abstract class DuskTestCase extends BaseTestCase
             foreach ($fields as $name => $errors) {
                 foreach ((array) $errors as $message) {
                     $this->assertSeeIn(
-                        "#field_{$name}.has-error .help-block",
-                        $message
+                        "#field_{$name}.has-error .help-block", $message
                     );
                 }
             }
@@ -41,10 +40,7 @@ abstract class DuskTestCase extends BaseTestCase
     protected function driver()
     {
         return RemoteWebDriver::create(
-            'http://localhost:9515',
-            DesiredCapabilities::chrome(),
-            5000,
-            10000
+            'http://localhost:9515', DesiredCapabilities::chrome()
         );
     }
 }

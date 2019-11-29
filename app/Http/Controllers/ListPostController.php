@@ -2,21 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Post;
-use App\Category;
+use App\{Post, Category};
 use Illuminate\Http\Request;
 
 class ListPostController extends Controller
 {
     public function __invoke(Category $category = null, Request $request)
     {
-        list($ordenColumn, $orderDirection) = $this->getListOrder($request->get('orden')); // recientes, antiguos, ...
+        list($orderColumn, $orderDirection) = $this->getListOrder($request->get('orden'));
 
         $posts = Post::query()
             ->with(['user', 'category'])
             ->category($category)
             ->scopes($this->getRouteScope($request))
-            ->orderBy($ordenColumn, $orderDirection)
+            ->orderBy($orderColumn, $orderDirection)
             ->paginate()
             ->appends($request->intersect(['orden']));
 
@@ -28,7 +27,7 @@ class ListPostController extends Controller
         $scopes = [
             'posts.mine' => ['byUser' => [$request->user()]],
             'posts.pending' => ['pending'],
-            'posts.completed' => ['completed'],
+            'posts.completed' => ['completed']
         ];
 
         return $scopes[$request->route()->getName()] ?? [];

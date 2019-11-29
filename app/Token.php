@@ -2,10 +2,9 @@
 
 namespace App;
 
-use Carbon\Carbon;
 use App\Mail\TokenMail;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\{Auth, Mail};
 use Illuminate\Database\Eloquent\Model;
 
 class Token extends Model
@@ -25,8 +24,11 @@ class Token extends Model
     public static function generateFor(User $user)
     {
         $token = new static;
+
         $token->token = str_random(60);
+
         $token->user()->associate($user);
+
         $token->save();
 
         return $token;
@@ -41,7 +43,6 @@ class Token extends Model
 
     public function sendByEmail()
     {
-        // dd($this->user);
         Mail::to($this->user)->send(new TokenMail($this));
     }
 

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Post;
 use App\Category;
+use App\Post;
 use Illuminate\Http\Request;
 
 class CreatePostController extends Controller
@@ -17,11 +17,10 @@ class CreatePostController extends Controller
 
     public function store(Request $request)
     {
-        // @todo: add validation!
         $this->validate($request, [
             'title' => 'required',
             'content' => 'required',
-            'category_id' => 'required|exists:categories,id'
+            'category_id' => 'required|exists:categories,id',
         ]);
 
         $post = auth()->user()->createPost($request->all());

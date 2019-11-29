@@ -22,6 +22,7 @@ class Comment extends Model
     {
         $this->post->pending = false;
         $this->post->answer_id = $this->id;
+
         $this->post->save();
     }
 

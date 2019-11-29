@@ -2,10 +2,9 @@
 
 namespace Tests\Browser;
 
-use App\Post;
 use App\Category;
+use App\Post;
 use Tests\DuskTestCase;
-use Laravel\Dusk\Browser;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class CreatePostsTest extends DuskTestCase
@@ -18,6 +17,7 @@ class CreatePostsTest extends DuskTestCase
     public function test_a_user_create_a_post()
     {
         $user = $this->defaultUser();
+
         $category = factory(Category::class)->create();
 
         $this->browse(function ($browser) use ($user, $category) {
