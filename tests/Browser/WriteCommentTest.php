@@ -2,8 +2,9 @@
 
 namespace Tests\Browser;
 
-use Illuminate\Support\Facades\Notification;
 use Tests\DuskTestCase;
+use Laravel\Dusk\Browser;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class WriteCommentTest extends DuskTestCase
@@ -18,7 +19,7 @@ class WriteCommentTest extends DuskTestCase
 
         $user = $this->defaultUser();
 
-        $this->browse(function($browser) use($post, $user){
+        $this->browse(function (Browser $browser) use ($post, $user) {
             $browser->loginAs($user)
                 ->visit($post->url)
                 ->type('comment', 'Un comentario')
@@ -31,6 +32,5 @@ class WriteCommentTest extends DuskTestCase
             'user_id' => $user->id,
             'post_id' => $post->id,
         ]);
-
     }
 }

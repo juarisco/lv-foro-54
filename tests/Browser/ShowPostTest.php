@@ -3,6 +3,7 @@
 namespace Tests\Browser;
 
 use Tests\DuskTestCase;
+use Laravel\Dusk\Browser;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class ShowPostTest extends DuskTestCase
@@ -24,7 +25,7 @@ class ShowPostTest extends DuskTestCase
         ]);
 
         // When
-        $this->browse(function($browser) use($post){
+        $this->browse(function (Browser $browser) use ($post) {
             $browser->visit($post->url)
                 ->assertSeeIn('h1', $post->title)
                 ->assertSee($post->content)
@@ -43,9 +44,9 @@ class ShowPostTest extends DuskTestCase
 
         $post->update(['title' => 'New title']);
 
-        $this->browse(function($browser) use($post, $url){
-           $browser->visit($url)
-               ->assertPathIs('/posts/1-new-title');
+        $this->browse(function (Browser $browser) use ($post, $url) {
+            $browser->visit($url)
+                ->assertPathIs('/posts/1-new-title');
         });
     }
 }

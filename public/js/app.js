@@ -1876,12 +1876,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["score", "vote"],
   data: function data() {
     return {
-      currentVote: this.vote,
-      currentScore: this.score
+      currentVote: parseInt(this.vote),
+      currentScore: parseInt(this.score)
     };
   },
   methods: {
@@ -1891,12 +1895,22 @@ __webpack_require__.r(__webpack_exports__);
         axios["delete"](window.location.href + "/vote");
         this.currentVote = null;
       } else {
-        this.currentScore++;
+        this.currentScore += this.currentVote ? 2 : 1;
         axios.post(window.location.href + "/upvote");
         this.currentVote = 1;
       }
     },
-    downvote: function downvote() {}
+    downvote: function downvote() {
+      if (this.currentVote == -1) {
+        this.currentScore++;
+        axios["delete"](window.location.href + "/vote");
+        this.currentVote = null;
+      } else {
+        this.currentScore += this.currentVote ? -2 : -1;
+        axios.post(window.location.href + "/downvote");
+        this.currentVote = -1;
+      }
+    }
   }
 });
 
@@ -32708,7 +32722,7 @@ var render = function() {
         "button",
         {
           staticClass: "btn",
-          class: _vm.currentVote == 1 ? "btn-primary" : " btn-default",
+          class: _vm.currentVote == 1 ? "btn-primary" : "btn-default",
           on: {
             click: function($event) {
               $event.preventDefault()
@@ -32727,6 +32741,7 @@ var render = function() {
         "button",
         {
           staticClass: "btn btn-default",
+          class: _vm.currentVote == -1 ? "btn-primary" : "btn-default",
           on: {
             click: function($event) {
               $event.preventDefault()
