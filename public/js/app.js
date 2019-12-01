@@ -1883,7 +1883,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ["score", "vote"],
+  props: ["score", "vote", "post_id"],
   data: function data() {
     return {
       currentVote: this.vote ? parseInt(this.vote) : null,
@@ -1921,7 +1921,7 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     buildUrl: function buildUrl(action) {
-      return window.location.href + "/" + action;
+      return "/posts/" + this.post_id + "/" + action;
     }
   }
 });
