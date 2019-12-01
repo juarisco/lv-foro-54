@@ -4,6 +4,7 @@
       <button
         @click.prevent="upvote"
         :class="currentVote == 1 ? 'btn-primary' : 'btn-default'"
+        :disabled="voteInProgress"
         class="btn"
       >+1</button>
       Puntuación actual:
@@ -12,6 +13,7 @@
       <button
         @click.prevent="downvote"
         :class="currentVote == -1 ? 'btn-primary' : 'btn-default'"
+        :disabled="voteInProgress"
         class="btn btn-default"
       >-1</button>
     </form>
@@ -24,7 +26,8 @@ export default {
   data() {
     return {
       currentVote: this.vote ? parseInt(this.vote) : null,
-      currentScore: parseInt(this.score)
+      currentScore: parseInt(this.score),
+      voteInProgress: false
     };
   },
   methods: {
@@ -35,18 +38,30 @@ export default {
       this.addVote(-1);
     },
     addVote(amount) {
+      this.voteInProgress = true;
       if (this.currentVote == amount) {
-        this.currentScore -= this.currentVote;
+        this.processRequest("delete", "vote");
 
-        axios.delete(window.location.href + "/vote");
         this.currentVote = null;
       } else {
-        this.currentScore += this.currentVote ? amount * 2 : amount;
-        axios.post(
-          window.location.href + (amount == 1) ? "/upvote" : "/downvote"
-        );
+        this.processRequest("post", "vote/" + amount);
+
         this.currentVote = amount;
       }
+    },
+    processRequest(method, action) {
+      axios[method](this.buildUrl(action))
+        .then(response => {
+          this.currentScore = response.data.new_score;
+          this.voteInProgress = false;
+        })
+        .catch(thrown => {
+          alert("Ocurrió un error!");
+          this.voteInProgress = false;
+        });
+    },
+    buildUrl(action) {
+      return window.location.href + "/" + action;
     }
   }
 };
