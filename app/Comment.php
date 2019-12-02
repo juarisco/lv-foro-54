@@ -2,10 +2,13 @@
 
 namespace App;
 
+use App\CanBeVoted;
 use Illuminate\Database\Eloquent\Model;
 
 class Comment extends Model
 {
+    use CanBeVoted;
+
     protected $fillable = ['comment', 'post_id'];
 
     public function user()

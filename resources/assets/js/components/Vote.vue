@@ -8,7 +8,7 @@
         class="btn"
       >+1</button>
       Puntuación actual:
-      <strong id="current-score">{{ currentScore }}</strong>
+      <strong class="current-score">{{ currentScore }}</strong>
 
       <button
         @click.prevent="downvote"
@@ -22,7 +22,7 @@
 
 <script>
 export default {
-  props: ["score", "vote", "post_id"],
+  props: ["score", "vote", "id", "module"],
   data() {
     return {
       currentVote: this.vote ? parseInt(this.vote) : null,
@@ -61,7 +61,7 @@ export default {
         });
     },
     buildUrl(action) {
-      return "/posts/" + this.post_id + "/" + action;
+      return "/" + this.module + "/" + this.id + "/" + action;
     }
   }
 };
