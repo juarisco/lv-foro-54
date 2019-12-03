@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 use Laravel\Dusk\DuskServiceProvider;
 use Illuminate\Support\ServiceProvider;
@@ -36,6 +37,10 @@ class AppServiceProvider extends ServiceProvider
         if ($this->app->environment('local', 'testing')) {
             $this->app->register(\Staudenmeir\DuskUpdater\DuskServiceProvider::class);
         }
+
+        Request::macro('intersect', function ($data) {
+            return array_filter($this->only($data));
+        });
     }
 
     protected function registerViewComposers()

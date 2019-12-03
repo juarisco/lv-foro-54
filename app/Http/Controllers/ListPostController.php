@@ -9,6 +9,7 @@ class ListPostController extends Controller
 {
     public function __invoke(Category $category = null, Request $request)
     {
+        // dd($category);
         list($orderColumn, $orderDirection) = $this->getListOrder($request->get('orden'));
 
         $posts = Post::query()
@@ -20,6 +21,7 @@ class ListPostController extends Controller
             ->scopes($this->getRouteScope($request))
             ->orderBy($orderColumn, $orderDirection)
             ->paginate()
+            // ->appends($request->intersect(['orden']));
             ->appends($request->intersect(['orden']));
 
         return view('posts.index', compact('posts', 'category'));
