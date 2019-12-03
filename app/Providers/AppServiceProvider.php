@@ -32,6 +32,10 @@ class AppServiceProvider extends ServiceProvider
         }
 
         Carbon::setLocale(config('app.locale'));
+
+        if ($this->app->environment('local', 'testing')) {
+            $this->app->register(\Staudenmeir\DuskUpdater\DuskServiceProvider::class);
+        }
     }
 
     protected function registerViewComposers()

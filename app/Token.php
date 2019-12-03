@@ -2,10 +2,10 @@
 
 namespace App;
 
-use App\Mail\TokenMail;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\{Auth, Mail};
+use App\Mail\TokenMail;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\{Auth, Mail};
 
 class Token extends Model
 {
@@ -48,7 +48,7 @@ class Token extends Model
 
     public function login()
     {
-        Auth::login($this->user);
+        Auth::login($this->user, true);
 
         $this->delete();
     }
