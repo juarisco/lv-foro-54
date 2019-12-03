@@ -4,7 +4,7 @@
     <div class="row">
         <div class="col-md-12">
             <h1>
-                {{ $category && $category->exists ? 'Posts de ' . $category->name : 'Posts' }}
+                {{ optional($category)->exists ? 'Posts de ' . $category->name : 'Posts' }}
             </h1>
         </div>
     </div>
@@ -14,6 +14,9 @@
         @include('posts.sidebar')
 
         <div class="col-md-10">
+
+            {!! Alert::render() !!}
+            
             {!! Form::open(['method'=>'get','class'=>'form form-inline']) !!}
                 {!! Form::select(
                     'orden',
